@@ -1,0 +1,42 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kranix-operator-role
+rules:
+  - apiGroups: ["kranix.io"]
+    resources: ["kranixapps", "kranixnamespaces", "kranixpolicies"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["kranix.io"]
+    resources: ["kranixapps/status", "kranixnamespaces/status", "kranixpolicies/status"]
+    verbs: ["get", "update", "patch"]
+  - apiGroups: ["kranix.io"]
+    resources: ["kranixapps/finalizers"]
+    verbs: ["update"]
+  - apiGroups: [""]
+    resources: ["namespaces", "events"]
+    verbs: ["get", "list", "watch", "create", "patch"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["coordination.k8s.io"]
+    resources: ["leases"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kranix-operator-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kranix-operator-role
+subjects:
+  - kind: ServiceAccount
+    name: kranix-operator
+    namespace: kranix-system
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kranix-operator
+  namespace: kranix-system
