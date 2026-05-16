@@ -1,6 +1,6 @@
 module github.com/kranix-io/kranix-operator
 
-go 1.26.0
+go 1.26
 
 require (
 	k8s.io/api v0.36.1
@@ -8,6 +8,8 @@ require (
 	k8s.io/client-go v0.36.1
 	sigs.k8s.io/controller-runtime v0.24.1
 )
+
+replace github.com/kranix-io/kranix-packages => ../kranix-packages
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
